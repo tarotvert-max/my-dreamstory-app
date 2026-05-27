@@ -3,311 +3,87 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StoryBot Creator - Secure</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <title>StoryBot Creator</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-        }
-
-        body {
-            background: linear-gradient(135deg, #0f172a, #1e1b4b);
-            color: #f1f5f9;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding: 20px;
-        }
-
-        .app-container {
-            width: 100%;
-            max-width: 480px;
-            background: rgba(30, 41, 59, 0.7);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 24px;
-            padding: 24px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-        }
-
-        h1 {
-            font-size: 24px;
-            text-align: center;
-            margin-bottom: 8px;
-            color: #818cf8;
-        }
-
-        .subtitle {
-            text-align: center;
-            font-size: 14px;
-            color: #94a3b8;
-            margin-bottom: 24px;
-        }
-
-        /* Screen States */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Roboto, sans-serif; }
+        body { background: linear-gradient(135deg, #0f172a, #1e1b4b); color: #f1f5f9; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
+        .app-container { width: 100%; max-width: 480px; background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 24px; padding: 24px; box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
+        h1 { font-size: 24px; text-align: center; margin-bottom: 8px; color: #818cf8; }
+        .subtitle { text-align: center; font-size: 14px; color: #94a3b8; margin-bottom: 24px; }
         .screen { display: none; }
         .screen.active { display: block; }
-
-        /* Form Controls */
-        .form-group {
-            margin-bottom: 16px;
-        }
-
-        label {
-            display: block;
-            font-size: 12px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            margin-bottom: 6px;
-            color: #cbd5e1;
-        }
-
-        input, select {
-            width: 100%;
-            padding: 12px;
-            background: #0f172a;
-            border: 1px solid #334155;
-            border-radius: 12px;
-            color: white;
-            font-size: 14px;
-            outline: none;
-        }
-
-        input:focus, select:focus {
-            border-color: #6366f1;
-        }
-
-        /* Buttons & Actions */
-        .btn {
-            width: 100%;
-            background: linear-gradient(135deg, #4f46e5, #6366f1);
-            color: white;
-            border: none;
-            padding: 14px;
-            border-radius: 12px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            margin-top: 10px;
-        }
-
-        .error-msg {
-            color: #f87171;
-            font-size: 13px;
-            text-align: center;
-            margin-top: 10px;
-            display: none;
-        }
-
-        /* Story Gameplay Mode */
-        .story-box {
-            background: #0f172a;
-            border-radius: 16px;
-            padding: 20px;
-            min-height: 180px;
-            max-height: 320px;
-            overflow-y: auto;
-            margin-bottom: 20px;
-            border: 1px solid #1e293b;
-            font-size: 15px;
-            line-height: 1.6;
-        }
-
-        .character-tag {
-            display: inline-block;
-            background: #312e81;
-            color: #c7d2fe;
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 11px;
-            font-weight: 600;
-            margin-bottom: 12px;
-        }
-
-        .options-container {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .option-card {
-            background: #1e293b;
-            border: 1px solid #334155;
-            padding: 14px;
-            border-radius: 12px;
-            cursor: pointer;
-            text-align: left;
-            font-size: 14px;
-            color: #e2e8f0;
-            transition: all 0.2s;
-        }
-
-        .option-card:hover {
-            background: #2563eb;
-            border-color: #3b82f6;
-            transform: translateY(-1px);
-        }
+        .form-group { margin-bottom: 16px; }
+        label { display: block; font-size: 12px; font-weight: 600; text-transform: uppercase; margin-bottom: 6px; color: #cbd5e1; }
+        input, select { width: 100%; padding: 12px; background: #0f172a; border: 1px solid #334155; border-radius: 12px; color: white; font-size: 14px; outline: none; }
+        .btn { width: 100%; background: linear-gradient(135deg, #4f46e5, #6366f1); color: white; border: none; padding: 14px; border-radius: 12px; font-size: 16px; font-weight: 600; cursor: pointer; margin-top: 10px; }
+        .story-box { background: #0f172a; border-radius: 16px; padding: 20px; min-height: 180px; max-height: 320px; overflow-y: auto; margin-bottom: 20px; border: 1px solid #1e293b; font-size: 15px; line-height: 1.6; }
+        .character-tag { display: inline-block; background: #312e81; color: #c7d2fe; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; margin-bottom: 12px; }
+        .options-container { display: flex; flex-direction: column; gap: 10px; }
+        .option-card { background: #1e293b; border: 1px solid #334155; padding: 14px; border-radius: 12px; cursor: pointer; text-align: left; font-size: 14px; color: #e2e8f0; }
+        .option-card:hover { background: #2563eb; border-color: #3b82f6; }
     </style>
 </head>
 <body>
 
 <div class="app-container">
-    
-    <div id="lockScreen" class="screen active">
-        <h1>🔒 Protected Space</h1>
-        <p class="subtitle">Please present the simulator access key</p>
+    <h1>StoryBot AI</h1>
+    <p class="subtitle">Design your bot, choose your adventure</p>
+
+    <div id="creatorScreen" class="screen active">
         <div class="form-group">
-            <label>Access Password</label>
-            <input type="password" id="passphraseInput" placeholder="Enter password...">
-            <div id="loginError" class="error-msg">Access Denied. Verification failed.</div>
+            <label>Bot Name</label>
+            <input type="text" id="botName" value="Leo">
         </div>
-        <button class="btn" onclick="checkPassword()">Unlock Simulator</button>
+        <div class="form-group">
+            <label>Choose Universe Archetype</label>
+            <select id="botUniverse">
+                <option value="cyberpunk">Cyberpunk Neon City (Sci-Fi)</option>
+                <option value="fantasy">Enchanted Magic Kingdom (Fantasy)</option>
+                <option value="mystery">Noir Detective Mansion (Mystery)</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Bot Behavioral Trait</label>
+            <select id="botTone">
+                <option value="witty">Sarcastic & Witty</option>
+                <option value="mysterious">Quiet & Mysterious</option>
+                <option value="heroic">Brave & Compassionate</option>
+            </select>
+        </div>
+        <button class="btn" onclick="startStory()">Initialize Universe</button>
     </div>
 
-    <div id="mainAppContent" class="screen">
-        <h1>StoryBot AI</h1>
-        <p class="subtitle">Design your bot, choose your adventure</p>
-
-        <div id="creatorScreen" class="screen active">
-            <div class="form-group">
-                <label>Bot Name</label>
-                <input type="text" id="botName" value="Leo">
-            </div>
-
-            <div class="form-group">
-                <label>Choose Universe Archetype</label>
-                <select id="botUniverse">
-                    <option value="cyberpunk">Cyberpunk Neon City (Sci-Fi)</option>
-                    <option value="fantasy">Enchanted Magic Kingdom (Fantasy)</option>
-                    <option value="mystery">Noir Detective Mansion (Mystery)</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label>Bot Behavioral Trait</label>
-                <select id="botTone">
-                    <option value="witty">Sarcastic & Witty</option>
-                    <option value="mysterious">Quiet & Mysterious</option>
-                    <option value="heroic">Brave & Compassionate</option>
-                </select>
-            </div>
-
-            <button class="btn" onclick="startStory()">Initialize Universe</button>
-        </div>
-
-        <div id="storyScreen" class="screen">
-            <div id="charBadge" class="character-tag">Loading...</div>
-            
-            <div class="story-box" id="storyOutput"></div>
-            <div class="options-container" id="optionsBox"></div>
-            
-            <button class="btn" style="background: #334155; margin-top: 25px; font-size: 12px; padding: 8px;" onclick="resetApp()">← Create a New Bot</button>
-        </div>
+    <div id="storyScreen" class="screen">
+        <div id="charBadge" class="character-tag">Loading...</div>
+        <div class="story-box" id="storyOutput"></div>
+        <div class="options-container" id="optionsBox"></div>
+        <button class="btn" style="background: #334155; margin-top: 25px; font-size: 12px; padding: 8px;" onclick="resetApp()">← Create a New Bot</button>
     </div>
 </div>
 
 <script>
-    // This is the secure encryption hash of the password "mydreams"
-    // It prevents anyone from looking into your public code to copy the clear text password.
-    const targetSecureHash = "39fe5fa4693cb5664be87271816e889020964fb02893f4cfb6387d85311096a6";
-
-    function checkPassword() {
-        const userInput = document.getElementById("passphraseInput").value;
-        const computedHash = CryptoJS.SHA256(userInput).toString();
-
-        if (computedHash === targetSecureHash) {
-            document.getElementById("lockScreen").classList.remove("active");
-            document.getElementById("mainAppContent").classList.add("active");
-        } else {
-            const errorElement = document.getElementById("loginError");
-            errorElement.style.display = "block";
-            document.getElementById("passphraseInput").value = "";
-        }
-    }
-
-    // Branching Multi-Choice Story Matrix
     let character = { name: '', universe: '', tone: '' };
-    
     const storyData = {
         cyberpunk: {
-            start: {
-                text: "Acid neon rain washes over the grid. Your custom bot, [NAME], meets you behind an alley. Known for being remarkably [TONE], they offer you a glowing corporate data-drive. 'Enforcers are tracking this signal right now,' [NAME] says. 'What do we do?'",
-                options: [
-                    { text: "Hack into the central grid terminal to scrub your trail.", next: "hack" },
-                    { text: "Run directly down to the neon underground black market.", next: "market" }
-                ]
-            },
-            hack: {
-                text: "You bypass the security terminal, but alarms trip! [NAME] pulls out a plasma blaster. 'We have choice options here, partner: fight through or hit the fire exit!'",
-                options: [
-                    { text: "Stand your ground and override the security nodes.", next: "victory" },
-                    { text: "Drop a smoke grenade and dive into the sewer grid.", next: "defeat" }
-                ]
-            },
-            market: {
-                text: "The underground market is packed with sketchy looking netrunners. A dealer offers to hide you, but wants the data-drive as payment.",
-                options: [
-                    { text: "Hand over the drive in exchange for safety.", next: "defeat" },
-                    { text: "Refuse, push past them, and find your own escape link.", next: "victory" }
-                ]
-            },
-            victory: { text: "Outstanding! Your tactical choices and [NAME]'s unique skill set got you through safely. The system is hacked, and you are rich. Game Won!", options: [] },
-            defeat: { text: "The enforcers corner your team in the dead ends. [NAME] sighs. 'Well, we tried our best.' Game Over.", options: [] }
+            start: { text: "Acid neon rain washes over the grid. Your custom bot, [NAME], meets you behind an alley. Known for being remarkably [TONE], they offer you a glowing corporate data-drive. 'Enforcers are tracking this signal right now,' [NAME] says. 'What do we do?'", options: [{ text: "Hack into the central grid terminal.", next: "hack" }, { text: "Run directly to the black market.", next: "market" }] },
+            hack: { text: "You bypass the security terminal, but alarms trip! [NAME] pulls out a plasma blaster. 'Fight through or hit the fire exit!'", options: [{ text: "Stand your ground and override nodes.", next: "victory" }, { text: "Drop a smoke grenade and dive into sewers.", next: "defeat" }] },
+            market: { text: "The underground market is packed. A dealer offers to hide you, but wants the data-drive as payment.", options: [{ text: "Hand over the drive for safety.", next: "defeat" }, { text: "Refuse and find your own escape link.", next: "victory" }] },
+            victory: { text: "Outstanding! Your tactical choices and [NAME]'s skills got you through safely. Game Won!", options: [] },
+            defeat: { text: "The enforcers corner your team. [NAME] sighs. 'Well, we tried our best.' Game Over.", options: [] }
         },
         fantasy: {
-            start: {
-                text: "The Enchanted Valley is alive with magic. [NAME], looking incredibly [TONE], holds a staff of starlight. 'The forgotten vault door lies ahead,' they announce. 'But it requires an offering.'",
-                options: [
-                    { text: "Offer a drop of your magical essence.", next: "vault_open" },
-                    { text: "Use brute force and magical spells to crack it open.", next: "vault_trap" }
-                ]
-            },
-            vault_open: {
-                text: "The doors swing open smoothly, revealing a legendary golden chalice. Suddenly, a stone dragon awakens from its sleep!",
-                options: [
-                    { text: "Cast a calming spell together with [NAME].", next: "victory" },
-                    { text: "Grab the chalice and sprint for the valley plains.", next: "defeat" }
-                ]
-            },
-            vault_trap: {
-                text: "The vault defense systems trigger! The floor begins to turn into quicksand. [NAME] yells for help.",
-                options: [
-                    { text: "Use your levitation scroll to rescue both of you.", next: "victory" },
-                    { text: "Try to climb up the slippery stone statues.", next: "defeat" }
-                ]
-            },
-            victory: { text: "Amazing! The balance of the valley is restored, and you escape with legendary status. Victory!", options: [] },
-            defeat: { text: "The temple magic locks you out completely. You leave empty handed, but safe. End of adventure.", options: [] }
+            start: { text: "The Enchanted Valley is alive with magic. [NAME], looking incredibly [TONE], holds a staff of starlight. 'The forgotten vault door lies ahead,' they announce.", options: [{ text: "Offer a drop of magical essence.", next: "vault_open" }, { text: "Use brute force to crack it open.", next: "vault_trap" }] },
+            vault_open: { text: "The doors swing open smoothly. Suddenly, a stone dragon awakens from its sleep!", options: [{ text: "Cast a calming spell together.", next: "victory" }, { text: "Grab the chalice and sprint.", next: "defeat" }] },
+            vault_trap: { text: "The vault defense triggers! The floor turns into quicksand.", options: [{ text: "Use your levitation scroll.", next: "victory" }, { text: "Try to climb the stone statues.", next: "defeat" }] },
+            victory: { text: "Amazing! The balance of the valley is restored. Victory!", options: [] },
+            defeat: { text: "The temple magic locks you out completely. End of adventure.", options: [] }
         },
         mystery: {
-            start: {
-                text: "Thunder crashes outside the isolated mansion. [NAME], acting in their usual [TONE] manner, points to a broken lock on the study window. 'The family heirloom was taken tonight. We have two key leads.'",
-                options: [
-                    { text: "Search the muddy paths out in the courtyard garden.", next: "garden" },
-                    { text: "Gather and cross-examine the guests in the lounge area.", next: "lounge" }
-                ]
-            },
-            garden: {
-                text: "In the rain, you uncover a dropped diamond cufflink belonging to the suspect. Footsteps approach!",
-                options: [
-                    { text: "Hide in the bushes to ambush the mystery figure.", next: "victory" },
-                    { text: "Confront them directly out in the open.", next: "defeat" }
-                ]
-            },
-            lounge: {
-                text: "The guests are visibly shaking. [NAME] whispers that the Butler's pockets look unusually heavy.",
-                options: [
-                    { text: "Accuse the Butler directly in front of everyone.", next: "victory" },
-                    { text: "Set a trap by pretending you found nothing.", next: "defeat" }
-                ]
-            },
-            victory: { text: "Boom! The suspect cracks under the pressure and hands over the stolen item. Case solved! Another win for the agency.", options: [] },
-            defeat: { text: "The true culprit slips out the back doors during the confusion. The case runs cold. End of file.", options: [] }
+            start: { text: "Thunder crashes outside the isolated mansion. [NAME], acting in their usual [TONE] manner, points to a broken lock on the window. 'The family heirloom was taken tonight.'", options: [{ text: "Search the courtyard garden.", next: "garden" }, { text: "Cross-examine guests in the lounge.", next: "lounge" }] },
+            garden: { text: "In the rain, you uncover a dropped diamond cufflink. Footsteps approach!", options: [{ text: "Hide in the bushes to ambush them.", next: "victory" }, { text: "Confront them directly out in the open.", next: "defeat" }] },
+            lounge: { text: "The guests are shaking. [NAME] whispers that the Butler's pockets look heavy.", options: [{ text: "Accuse the Butler directly.", next: "victory" }, { text: "Set a trap by pretending you found nothing.", next: "defeat" }] },
+            victory: { text: "Boom! The suspect cracks under pressure. Case solved!", options: [] },
+            defeat: { text: "The true culprit slips out the back doors. The case runs cold.", options: [] }
         }
     };
 
@@ -315,27 +91,19 @@
         character.name = document.getElementById('botName').value || 'Companion';
         character.universe = document.getElementById('botUniverse').value;
         character.tone = document.getElementById('botTone').options[document.getElementById('botTone').selectedIndex].text;
-
         document.getElementById('charBadge').innerText = `${character.name} ✦ ${character.tone}`;
         document.getElementById('creatorScreen').classList.remove('active');
         document.getElementById('storyScreen').classList.add('active');
-
         renderNode('start');
     }
 
     function renderNode(nodeKey) {
         const currentUniverseStory = storyData[character.universe];
         const currentNode = currentUniverseStory[nodeKey];
-
-        let storyText = currentNode.text
-            .replace(/\[NAME\]/g, character.name)
-            .replace(/\[TONE\]/g, character.tone.toLowerCase());
-
+        let storyText = currentNode.text.replace(/\[NAME\]/g, character.name).replace(/\[TONE\]/g, character.tone.toLowerCase());
         document.getElementById('storyOutput').innerHTML = `<p>${storyText}</p>`;
-
         const optionsBox = document.getElementById('optionsBox');
         optionsBox.innerHTML = '';
-
         if (currentNode.options.length > 0) {
             currentNode.options.forEach(opt => {
                 const btn = document.createElement('button');
@@ -349,7 +117,7 @@
             endMsg.style.textAlign = 'center';
             endMsg.style.color = '#a78bfa';
             endMsg.style.fontWeight = 'bold';
-            endMsg.innerText = "✨ EXPERIENCE RECONSTRUCTED ✨";
+            endMsg.innerText = "✨ END OF ADVENTURE ✨";
             optionsBox.appendChild(endMsg);
         }
     }
@@ -358,12 +126,6 @@
         document.getElementById('storyScreen').classList.remove('active');
         document.getElementById('creatorScreen').classList.add('active');
     }
-
-    // Bind Enter key on login screen
-    document.getElementById("passphraseInput").addEventListener("keypress", function(e) {
-        if (e.key === "Enter") checkPassword();
-    });
 </script>
-
 </body>
 </html>
